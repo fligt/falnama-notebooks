@@ -31,6 +31,9 @@ class Dashboard:
             self.set_data(data)
         # sets the current index of the initial datastack
         self.current_index = 0
+
+        # sets the current emap showing to not equalize
+        self.eq_hist = False
         
         # creates a list that can save the patches.
         self.patches = [None] * self.roi_count
@@ -119,6 +122,8 @@ class Dashboard:
         elements = maxrf4u.elems_from_atomnums(atom_nums)
         # fills the elem_axs with the element_maps
         for i, emap in enumerate(element_maps):
+            if self.eq_hist:
+                emap = ske.equalize_hist(emap)
             self.elem_axs[i].imshow(emap)
             self.elem_axs[i].set_title(elements[i])
 
@@ -226,6 +231,12 @@ class Dashboard:
         # updates the current_index variable
         self.current_index = index
 
+    def toggle_equalize(self):
+        '''Toggles if you want to see equalized element maps or not
+        
+        needs reload after toggle'''
+        self.eq_hist = not self.eq_hist
+    
     def add_roi(self, index, x=None, y=None):
         '''Adds the region of interest to the dashboard
         
