@@ -10,7 +10,7 @@ import re
 
 class Dashboard:
 
-    def __init__(self, datastack_files=None, roi_count=10, data=None):
+    def __init__(self, datastack_files=None, roi_count=10, data=None, pplot=False):
         '''Create a dashboard for analyzing spectras on regions of interest
 
         datastack_files: A list of datastack_file paths, does accept a singular string.
@@ -20,6 +20,9 @@ class Dashboard:
         
         # sets the amount of region of interest
         self.roi_count = roi_count
+        
+        # sets the variable if the pattern plot should be aviable or not
+        self.pplot = pplot
         
         # creates the list of datastack_files
         self.datastack_files = self._set_datastack_files(datastack_files)
