@@ -1,0 +1,360 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "3b4495a0-9782-4cba-82fd-ee27e0f7b425",
+   "metadata": {},
+   "source": [
+    "# Pooch custom cache"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "858b2c9b-5d7f-4db7-9303-091dfb507729",
+   "metadata": {},
+   "source": [
+    "In this documentation is shown how to override the default cache location with a persistent environment variable: https://www.fatiando.org/pooch/latest/user-defined-cache.html"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6ac70a8c-679f-493d-870b-849eb0e2c9b6",
+   "metadata": {},
+   "source": [
+    "On this machine, I created the an extra line in the file `/etc/environment` and activated it with \n",
+    "\n",
+    "    $ source ./environment "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "fcb145d1-b6af-45f1-8343-e12322054776",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-04-28T12:50:30.370401Z",
+     "iopub.status.busy": "2025-04-28T12:50:30.370130Z",
+     "iopub.status.idle": "2025-04-28T12:50:30.420364Z",
+     "shell.execute_reply": "2025-04-28T12:50:30.419766Z",
+     "shell.execute_reply.started": "2025-04-28T12:50:30.370373Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import pooch "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "61fa1248-4603-4dd8-82a2-ad8a38bf39a4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-04-28T12:50:19.541584Z",
+     "iopub.status.busy": "2025-04-28T12:50:19.541232Z",
+     "iopub.status.idle": "2025-04-28T12:50:19.683063Z",
+     "shell.execute_reply": "2025-04-28T12:50:19.682430Z",
+     "shell.execute_reply.started": "2025-04-28T12:50:19.541539Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "/media/frank/lonprojecten/2024-811_falnama-project/data/interim/maxrf/datastacks\n"
+     ]
+    }
+   ],
+   "source": [
+    "!printenv FALNAMA_CACHE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "13d3af7b-0070-4f34-9243-c6e51eb1c79e",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-04-28T12:53:13.339374Z",
+     "iopub.status.busy": "2025-04-28T12:53:13.339120Z",
+     "iopub.status.idle": "2025-04-28T12:53:13.344193Z",
+     "shell.execute_reply": "2025-04-28T12:53:13.343792Z",
+     "shell.execute_reply.started": "2025-04-28T12:53:13.339352Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<pooch.core.Pooch at 0x7bd992d53380>"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pooch.create(path='abc', base_url=\"https://f002.backblazeb2.com/file/falnama-data/datastacks/\", env='FALNAMA_CACHE')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "25e42952-f78e-4a80-b2e0-307995090881",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-04-28T11:17:56.559304Z",
+     "iopub.status.busy": "2025-04-28T11:17:56.559082Z",
+     "iopub.status.idle": "2025-04-28T11:17:56.579686Z",
+     "shell.execute_reply": "2025-04-28T11:17:56.579032Z",
+     "shell.execute_reply.started": "2025-04-28T11:17:56.559284Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\u001b[0;31mSignature:\u001b[0m\n",
+       "\u001b[0mpooch\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcreate\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mpath\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mbase_url\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mversion\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mversion_dev\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'master'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0menv\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mregistry\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0murls\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mretry_if_failed\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mallow_updates\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+       "\u001b[0;31mSource:\u001b[0m   \n",
+       "\u001b[0;32mdef\u001b[0m \u001b[0mcreate\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mpath\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mbase_url\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mversion\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mversion_dev\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"master\"\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0menv\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mregistry\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0murls\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mretry_if_failed\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mallow_updates\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;34m\"\"\"\u001b[0m\n",
+       "\u001b[0;34m    Create a :class:`~pooch.Pooch` with sensible defaults to fetch data files.\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    If a version string is given, the Pooch will be versioned, meaning that the\u001b[0m\n",
+       "\u001b[0;34m    local storage folder and the base URL depend on the project version. This\u001b[0m\n",
+       "\u001b[0;34m    is necessary if your users have multiple versions of your library installed\u001b[0m\n",
+       "\u001b[0;34m    (using virtual environments) and you updated the data files between\u001b[0m\n",
+       "\u001b[0;34m    versions. Otherwise, every time a user switches environments would trigger\u001b[0m\n",
+       "\u001b[0;34m    a re-download of the data. The version string will be appended to the local\u001b[0m\n",
+       "\u001b[0;34m    storage path (for example, ``~/.mypooch/cache/v0.1``) and inserted into the\u001b[0m\n",
+       "\u001b[0;34m    base URL (for example,\u001b[0m\n",
+       "\u001b[0;34m    ``https://github.com/fatiando/pooch/raw/v0.1/data``). If the version string\u001b[0m\n",
+       "\u001b[0;34m    contains ``+XX.XXXXX``, it will be interpreted as a development version.\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    Does **not** create the local data storage folder. The folder will only be\u001b[0m\n",
+       "\u001b[0;34m    created the first time a download is attempted with\u001b[0m\n",
+       "\u001b[0;34m    :meth:`pooch.Pooch.fetch`. This makes it safe to use this function at the\u001b[0m\n",
+       "\u001b[0;34m    module level (so it's executed on ``import`` and the resulting\u001b[0m\n",
+       "\u001b[0;34m    :class:`~pooch.Pooch` is a global variable).\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    Parameters\u001b[0m\n",
+       "\u001b[0;34m    ----------\u001b[0m\n",
+       "\u001b[0;34m    path : str, PathLike, list or tuple\u001b[0m\n",
+       "\u001b[0;34m        The path to the local data storage folder. If this is a list or tuple,\u001b[0m\n",
+       "\u001b[0;34m        we'll join the parts with the appropriate separator. The *version* will\u001b[0m\n",
+       "\u001b[0;34m        be appended to the end of this path. Use :func:`pooch.os_cache` for a\u001b[0m\n",
+       "\u001b[0;34m        sensible default.\u001b[0m\n",
+       "\u001b[0;34m    base_url : str\u001b[0m\n",
+       "\u001b[0;34m        Base URL for the remote data source. All requests will be made relative\u001b[0m\n",
+       "\u001b[0;34m        to this URL. The string should have a ``{version}`` formatting mark in\u001b[0m\n",
+       "\u001b[0;34m        it. We will call ``.format(version=version)`` on this string. If the\u001b[0m\n",
+       "\u001b[0;34m        URL does not end in a ``'/'``, a trailing ``'/'`` will be added\u001b[0m\n",
+       "\u001b[0;34m        automatically.\u001b[0m\n",
+       "\u001b[0;34m    version : str or None\u001b[0m\n",
+       "\u001b[0;34m        The version string for your project. Should be PEP440 compatible. If\u001b[0m\n",
+       "\u001b[0;34m        None is given, will not attempt to format *base_url* and no subfolder\u001b[0m\n",
+       "\u001b[0;34m        will be appended to *path*.\u001b[0m\n",
+       "\u001b[0;34m    version_dev : str\u001b[0m\n",
+       "\u001b[0;34m        The name used for the development version of a project. If your data is\u001b[0m\n",
+       "\u001b[0;34m        hosted on Github (and *base_url* is a Github raw link), then\u001b[0m\n",
+       "\u001b[0;34m        ``\"master\"`` is a good choice (default). Ignored if *version* is None.\u001b[0m\n",
+       "\u001b[0;34m    env : str or None\u001b[0m\n",
+       "\u001b[0;34m        An environment variable that can be used to overwrite *path*. This\u001b[0m\n",
+       "\u001b[0;34m        allows users to control where they want the data to be stored. We'll\u001b[0m\n",
+       "\u001b[0;34m        append *version* to the end of this value as well.\u001b[0m\n",
+       "\u001b[0;34m    registry : dict or None\u001b[0m\n",
+       "\u001b[0;34m        A record of the files that are managed by this Pooch. Keys should be\u001b[0m\n",
+       "\u001b[0;34m        the file names and the values should be their hashes. Only files\u001b[0m\n",
+       "\u001b[0;34m        in the registry can be fetched from the local storage. Files in\u001b[0m\n",
+       "\u001b[0;34m        subdirectories of *path* **must use Unix-style separators** (``'/'``)\u001b[0m\n",
+       "\u001b[0;34m        even on Windows.\u001b[0m\n",
+       "\u001b[0;34m    urls : dict or None\u001b[0m\n",
+       "\u001b[0;34m        Custom URLs for downloading individual files in the registry. A\u001b[0m\n",
+       "\u001b[0;34m        dictionary with the file names as keys and the custom URLs as values.\u001b[0m\n",
+       "\u001b[0;34m        Not all files in *registry* need an entry in *urls*. If a file has an\u001b[0m\n",
+       "\u001b[0;34m        entry in *urls*, the *base_url* will be ignored when downloading it in\u001b[0m\n",
+       "\u001b[0;34m        favor of ``urls[fname]``.\u001b[0m\n",
+       "\u001b[0;34m    retry_if_failed : int\u001b[0m\n",
+       "\u001b[0;34m        Retry a file download the specified number of times if it fails because\u001b[0m\n",
+       "\u001b[0;34m        of a bad connection or a hash mismatch. By default, downloads are only\u001b[0m\n",
+       "\u001b[0;34m        attempted once (``retry_if_failed=0``). Initially, will wait for 1s\u001b[0m\n",
+       "\u001b[0;34m        between retries and then increase the wait time by 1s with each retry\u001b[0m\n",
+       "\u001b[0;34m        until a maximum of 10s.\u001b[0m\n",
+       "\u001b[0;34m    allow_updates : bool or str\u001b[0m\n",
+       "\u001b[0;34m        Whether existing files in local storage that have a hash mismatch with\u001b[0m\n",
+       "\u001b[0;34m        the registry are allowed to update from the remote URL. If a string is\u001b[0m\n",
+       "\u001b[0;34m        passed, we will assume it's the name of an environment variable that\u001b[0m\n",
+       "\u001b[0;34m        will be checked for the true/false value. If ``False``, any mismatch\u001b[0m\n",
+       "\u001b[0;34m        with hashes in the registry will result in an error. Defaults to\u001b[0m\n",
+       "\u001b[0;34m        ``True``.\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    Returns\u001b[0m\n",
+       "\u001b[0;34m    -------\u001b[0m\n",
+       "\u001b[0;34m    pooch : :class:`~pooch.Pooch`\u001b[0m\n",
+       "\u001b[0;34m        The :class:`~pooch.Pooch` initialized with the given arguments.\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    Examples\u001b[0m\n",
+       "\u001b[0;34m    --------\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    Create a :class:`~pooch.Pooch` for a release (v0.1):\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    >>> pup = create(path=\"myproject\",\u001b[0m\n",
+       "\u001b[0;34m    ...              base_url=\"http://some.link.com/{version}/\",\u001b[0m\n",
+       "\u001b[0;34m    ...              version=\"v0.1\",\u001b[0m\n",
+       "\u001b[0;34m    ...              registry={\"data.txt\": \"9081wo2eb2gc0u...\"})\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.parts)  # The path is a pathlib.Path\u001b[0m\n",
+       "\u001b[0;34m    ('myproject', 'v0.1')\u001b[0m\n",
+       "\u001b[0;34m    >>> # The local folder is only created when a dataset is first downloaded\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.exists())\u001b[0m\n",
+       "\u001b[0;34m    False\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.base_url)\u001b[0m\n",
+       "\u001b[0;34m    http://some.link.com/v0.1/\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.registry)\u001b[0m\n",
+       "\u001b[0;34m    {'data.txt': '9081wo2eb2gc0u...'}\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.registry_files)\u001b[0m\n",
+       "\u001b[0;34m    ['data.txt']\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    If this is a development version (12 commits ahead of v0.1), then the\u001b[0m\n",
+       "\u001b[0;34m    ``version_dev`` will be used (defaults to ``\"master\"``):\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    >>> pup = create(path=\"myproject\",\u001b[0m\n",
+       "\u001b[0;34m    ...              base_url=\"http://some.link.com/{version}/\",\u001b[0m\n",
+       "\u001b[0;34m    ...              version=\"v0.1+12.do9iwd\")\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.parts)\u001b[0m\n",
+       "\u001b[0;34m    ('myproject', 'master')\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.base_url)\u001b[0m\n",
+       "\u001b[0;34m    http://some.link.com/master/\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    Versioning is optional (but highly encouraged):\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    >>> pup = create(path=\"myproject\",\u001b[0m\n",
+       "\u001b[0;34m    ...              base_url=\"http://some.link.com/\",\u001b[0m\n",
+       "\u001b[0;34m    ...              registry={\"data.txt\": \"9081wo2eb2gc0u...\"})\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.parts)  # The path is a pathlib.Path\u001b[0m\n",
+       "\u001b[0;34m    ('myproject',)\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.base_url)\u001b[0m\n",
+       "\u001b[0;34m    http://some.link.com/\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    To place the storage folder at a subdirectory, pass in a list and we'll\u001b[0m\n",
+       "\u001b[0;34m    join the path for you using the appropriate separator for your operating\u001b[0m\n",
+       "\u001b[0;34m    system:\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    >>> pup = create(path=[\"myproject\", \"cache\", \"data\"],\u001b[0m\n",
+       "\u001b[0;34m    ...              base_url=\"http://some.link.com/{version}/\",\u001b[0m\n",
+       "\u001b[0;34m    ...              version=\"v0.1\")\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.parts)\u001b[0m\n",
+       "\u001b[0;34m    ('myproject', 'cache', 'data', 'v0.1')\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    The user can overwrite the storage path by setting an environment variable:\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    >>> # The variable is not set so we'll use *path*\u001b[0m\n",
+       "\u001b[0;34m    >>> pup = create(path=[\"myproject\", \"not_from_env\"],\u001b[0m\n",
+       "\u001b[0;34m    ...              base_url=\"http://some.link.com/{version}/\",\u001b[0m\n",
+       "\u001b[0;34m    ...              version=\"v0.1\",\u001b[0m\n",
+       "\u001b[0;34m    ...              env=\"MYPROJECT_DATA_DIR\")\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.parts)\u001b[0m\n",
+       "\u001b[0;34m    ('myproject', 'not_from_env', 'v0.1')\u001b[0m\n",
+       "\u001b[0;34m    >>> # Set the environment variable and try again\u001b[0m\n",
+       "\u001b[0;34m    >>> import os\u001b[0m\n",
+       "\u001b[0;34m    >>> os.environ[\"MYPROJECT_DATA_DIR\"] = os.path.join(\"myproject\", \"env\")\u001b[0m\n",
+       "\u001b[0;34m    >>> pup = create(path=[\"myproject\", \"not_env\"],\u001b[0m\n",
+       "\u001b[0;34m    ...              base_url=\"http://some.link.com/{version}/\",\u001b[0m\n",
+       "\u001b[0;34m    ...              version=\"v0.1\",\u001b[0m\n",
+       "\u001b[0;34m    ...              env=\"MYPROJECT_DATA_DIR\")\u001b[0m\n",
+       "\u001b[0;34m    >>> print(pup.path.parts)\u001b[0m\n",
+       "\u001b[0;34m    ('myproject', 'env', 'v0.1')\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m    \"\"\"\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;32mif\u001b[0m \u001b[0mversion\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mversion\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcheck_version\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mversion\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfallback\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mversion_dev\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mbase_url\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mbase_url\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mformat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mversion\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mversion\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;31m# Don't create the cache folder here! This function is usually called in\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;31m# the module context (at import time), so touching the file system is not\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;31m# recommended. It could cause crashes when multiple processes/threads try\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;31m# to import at the same time (which would try to create the folder several\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;31m# times at once).\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mpath\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcache_location\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mpath\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0menv\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mversion\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mallow_updates\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mstr\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mallow_updates\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mos\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0menviron\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mallow_updates\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m\"true\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mlower\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0;34m\"false\"\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;31m# add trailing \"/\"\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mbase_url\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mbase_url\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrstrip\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"/\"\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0;34m\"/\"\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0mpup\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mPooch\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mpath\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mpath\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mbase_url\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mbase_url\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mregistry\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mregistry\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0murls\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0murls\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mretry_if_failed\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mretry_if_failed\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m        \u001b[0mallow_updates\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mallow_updates\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\n",
+       "\u001b[0;34m\u001b[0m    \u001b[0;32mreturn\u001b[0m \u001b[0mpup\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+       "\u001b[0;31mFile:\u001b[0m      ~/.config/jupyterlab-desktop/jlab_server/lib/python3.12/site-packages/pooch/core.py\n",
+       "\u001b[0;31mType:\u001b[0m      function"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0d81c93b-5812-4e8c-9a5d-23f97a6d041e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.5"
+  },
+  "widgets": {
+   "application/vnd.jupyter.widget-state+json": {
+    "state": {},
+    "version_major": 2,
+    "version_minor": 0
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
