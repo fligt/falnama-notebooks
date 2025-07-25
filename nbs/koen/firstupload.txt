@@ -1,1 +1,1 @@
-Een tekst voor op de nextcloud
+Een edit gemaakt met de nieuwe remotedata functie
