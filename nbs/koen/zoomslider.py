@@ -22,29 +22,15 @@ class ZoomSlider():
         )
         self.upload_button.on_click(self._create_slider)
 
-        self.rast_size_setting = pn.widgets.IntInput(
-            value=1000, 
-            name='Raster size:',
-            placeholder='Please enter your raster size.'
-        )
-
-        self.display_width_setting = pn.widgets.IntInput(
-            value=600,
-            name='Display width:',
-            placeholder='Please enter your display width.'
-        )
-
         self.display_height_setting = pn.widgets.IntInput(
-            value=600, 
+            value=650, 
             name='Display height:',
             placeholder='Please enter your display height.'
         )
         
         self.settings = pn.WidgetBox(
             pn.pane.Markdown("## Settings"),
-            self.rast_size_setting,
-            #self.display_width_setting,
-            #self.display_height_setting
+            self.display_height_setting
         )
 
         self.reset_button = pn.widgets.Button(
@@ -78,30 +64,30 @@ class ZoomSlider():
         self.main.append(pn.pane.Markdown("Converting images..."))
 
         settings = {
-            'rast_size' : self.rast_size_setting.value,
-            #'display_width' : self.display_width_setting.value,
-            #'display_height' : self.display_height_setting.value
+            'display_height' : self.display_height_setting.value,
         }
-        left_im = self._convert_image(self.file_upload.value[0], **settings)
-        right_im = self._convert_image(self.file_upload.value[1], **settings)
+        left_im, width = self._convert_image(self.file_upload.value[0], **settings)
+        right_im, _ = self._convert_image(self.file_upload.value[1], **settings)
         
-        self.slider = pn.layout.Swipe(left_im, right_im, slider_color='red', width=600)
+        self.slider = pn.layout.Swipe(left_im, right_im, slider_color='red', width=width)
         self.main.clear()
         self.main.extend([
                 self.title,
                 self.slider
             ])
         
-    def _convert_image(self, im, rast_size=1000):
+    def _convert_image(self, im, display_height=650):
         io_im = iio.imread(im)
+        aspect_ratio = io_im.shape[1] / io_im.shape[0]
+        width = int(display_height * aspect_ratio)
         if len(io_im.shape) == 2:
             hv_im = hv.Image(io_im)
-            rast_im = rasterize(hv_im, width=rast_size, height=rast_size)
-            return pn.pane.HoloViews(rast_im.opts(xaxis=None, yaxis=None, toolbar=None, cmap="gray"))
+            rast_im = rasterize(hv_im)
+            return pn.pane.HoloViews(rast_im.opts(xaxis=None, yaxis=None, toolbar=None, cmap="gray", height=display_height, width=width)), width
         elif len(io_im.shape) == 3:
             hv_im = hv.RGB(io_im)
-            rast_im = rasterize(hv_im, width=rast_size, height=rast_size)
-            return pn.pane.HoloViews(rast_im.opts(xaxis=None, yaxis=None, toolbar=None))
+            rast_im = rasterize(hv_im)
+            return pn.pane.HoloViews(rast_im.opts(xaxis=None, yaxis=None, toolbar=None, height=display_height, width=width)), width
         else:
             raise ValueError(f"Image shape not recognized, needs to be 2 or 3 but found {io_im.shape}")
 
